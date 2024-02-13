@@ -61,6 +61,8 @@ Sets padding value to `0`.
 #### `#`
 Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
 
+**Corner case:** if value is 0, no prefix is added.
+
 > [!NOTE]
 > This flag is in `hexadecimal` group.
 

@@ -8,14 +8,6 @@ It is actually pretty cool :)
 
 Version: 10
 
-* [Requirements](#requirements)
-  * [Bonus](#bonus)
-  * [Mandatory](#mandatory)
-* [Development](#development)
-  * [Syntax](#syntax) 
-  * [Flags](#flags)
-
-
 ## Requirements
 The prototype for the function must be:
 ``` C
@@ -42,24 +34,76 @@ You have to implement the following conversions:
 ### Syntax
 The syntax for every format specifier is:
 ```
-%[flags][width][.precision][length]specifier
+%[flags][width][.precision]specifier
 ```
 ### Flags
-Since multiple flags may be used, their behaviour must be able to be merged into them. To do so, flags need a `group[s]` and a `priority` in it.
-* `priority` is an int from `0` to `n`.
 #### `-`
 Justifies the result to the left within the given field `width`. So padding will be at the right.
 Ignored if `width` is not provided.
 
-> [!IMPORTANT] 
->  `0` is a `padding flag` and has **priority 1**.
-
 **By default,** result is justified to the right. So padding will be at the left.
+
+> [!NOTE] 
+>  This flag is in `padding` group.
+
+---
+
 #### `0`
 Sets padding value to `0`.
 
 **By default,** padding value is a space.
 
-> [!IMPORTANT] 
->  `0` is a `padding flag` and has **priority 0**.
+> [!NOTE] 
+>  This flag is in `padding` group.
 
+---
+
+#### `#`
+Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
+
+> [!NOTE]
+> This flag is in `hexadecimal` group.
+
+---
+
+#### `.[int]`
+Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
+
+> [!NOTE]
+> This flag is in `hexadecimal` group.
+
+---
+
+#### ` ` <sub>(space)</sub>
+If no sign is written, it inserts a blank space before the value.
+
+> [!NOTE]
+> This flag is in `sign` group.
+
+---
+
+#### `+`
+Forces the result to be printed with sign (+ or -).
+
+> [!NOTE]
+> This flag is in `sign` group.
+
+---
+
+#### Priority groups
+##### `padding`
+Flag|priority
+-|-
+`-`|0
+`0`|1
+
+##### `sign`
+Flag|priority
+-|-
+`+`|0
+` ` <sub>(space)</sub>|1
+
+##### `hexadecimal`
+Flag|priority
+-|-
+`#`|0

@@ -97,12 +97,11 @@ Forces the result to be printed with sign (+ or -).
 ---
 
 #### Priority groups
-##### `padding`
+
+##### `hexadecimal`
 Flag|priority
 -|-
-`-`|0
-`0`|1
-`.[int]` <sub>(precision)</sub>|2
+`#`|0
 
 ##### `sign`
 Flag|priority
@@ -110,7 +109,10 @@ Flag|priority
 `+`|0
 ` ` <sub>(space)</sub>|1
 
-##### `hexadecimal`
+##### `padding`
 Flag|priority
 -|-
-`#`|0
+`-`|0
+`0`|1
+`.[int]` <sub>(precision)</sub>|2
+

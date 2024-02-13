@@ -66,11 +66,15 @@ Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
 
 ---
 
-#### `.[int]`
-Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
+#### `.[int]` <sub>(precision)</sub>
+For integer specifiers (`%d`, `%i`, `%u`, `%x`, `%X`) it sets the minimum number of digits to be written. The default precision is set to 0. If some `[int]` is found, then precision is reassigned.
+
+**Corner case:** A precision of `0` means that no character is written for the value `0`.
+
+For `%s` specifier it is the maximum number of digits to be written.
 
 > [!NOTE]
-> This flag is in `hexadecimal` group.
+> This flag is in `padding` group.
 
 ---
 
@@ -96,6 +100,7 @@ Flag|priority
 -|-
 `-`|0
 `0`|1
+`.[int]` <sub>(precision)</sub>|2
 
 ##### `sign`
 Flag|priority

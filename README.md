@@ -115,4 +115,5 @@ Flag|priority
 `-`|0
 `0`|1
 `.[int]` <sub>(precision)</sub>|2
+`width`| 3
 

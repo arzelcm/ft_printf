@@ -1,3 +1,6 @@
+> [!WARNING] 
+>  This project is WIP (Work In Progress).
+
 # 42 cursus ft_printf
 Because ft_putnbr() and ft_putstr() aren’t enough.
 
@@ -8,12 +11,14 @@ It is actually pretty cool :)
 
 Version: 10
 
-## Requirements
+# Contents
+
+# Requirements
 The prototype for the function must be:
 ``` C
 int ft_printf(const char *, ...);
 ```
-### Mandatory
+## Mandatory
 You have to implement the following conversions:
 * `%c` Prints a single character.
 * `%s` Prints a string (as defined by the common C convention).
@@ -25,19 +30,19 @@ You have to implement the following conversions:
 * `%X` Prints a number in hexadecimal (base 16) uppercase format.
 * `%%` Prints a percent sign.
 
-### Bonus
+## Bonus
 * Manage any combination of the following flags: `-0.` and the field minimum width under all conversions.
 * Manage all the following flags: `# +` (Yes, one of them is a space).
 
 
-## Development
-### Syntax
+# Development
+## Syntax
 The syntax for every format specifier is:
 ```
 %[flags][width][.precision]specifier
 ```
-### Flags
-#### `-`
+## Flags
+### `-`
 Justifies the result to the left within the given field `width`. So padding will be at the right.
 Ignored if `width` is not provided.
 
@@ -48,7 +53,7 @@ Ignored if `width` is not provided.
 
 ---
 
-#### `0`
+### `0`
 Sets padding value to `0`.
 
 **By default,** padding value is a space.
@@ -58,7 +63,7 @@ Sets padding value to `0`.
 
 ---
 
-#### `#`
+### `#`
 Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
 
 **Corner case:** if value is 0, no prefix is added.
@@ -68,19 +73,21 @@ Used with `%x` or `%X` specifiers. It adds hexadecimal prefix.
 
 ---
 
-#### `.[int]` <sub>(precision)</sub>
+### `.[int]` <sub>(precision)</sub>
 For integer specifiers (`%d`, `%i`, `%u`, `%x`, `%X`) it sets the minimum number of digits to be written. The default precision is set to 0. If some `[int]` is found, then precision is reassigned.
 
 **Corner case:** A precision of `0` means that no character is written for the value `0`.
 
 For `%s` specifier it is the maximum number of digits to be written.
 
+
+**Max value:** `2147483646` (INT_MAX - 1).
 > [!NOTE]
 > This flag is in `padding` group.
 
 ---
 
-#### ` ` <sub>(space)</sub>
+### ` ` <sub>(space)</sub>
 If no sign is written, it inserts a blank space before the value.
 
 > [!NOTE]
@@ -88,7 +95,7 @@ If no sign is written, it inserts a blank space before the value.
 
 ---
 
-#### `+`
+### `+`
 Forces the result to be printed with sign (+ or -).
 
 > [!NOTE]
@@ -96,23 +103,35 @@ Forces the result to be printed with sign (+ or -).
 
 ---
 
-#### Priority groups
+### `width`
+It defines min printed characters amount. When printed characters are not sufficient to reach its value, padding is added to satisfy this requisite.
+> [!NOTE]
+> This flag is in `padding` group.
 
-##### `hexadecimal`
+**By default,** `width` is auto/inherit.
+
+**Max value:** `2147483646` (INT_MAX - 1).
+
+### Priority groups
+
+#### `hexadecimal`
 Flag|priority
 -|-
 `#`|0
 
-##### `sign`
+#### `sign`
 Flag|priority
 -|-
 `+`|0
 ` ` <sub>(space)</sub>|1
 
-##### `padding`
+#### `padding`
 Flag|priority
 -|-
 `-`|0
 `0`|1
 `.[int]` <sub>(precision)</sub>|2
+`width`| 3
 
+# References
+* [https://cplusplus.com/reference/cstdio/printf/](https://cplusplus.com/reference/cstdio/printf/)

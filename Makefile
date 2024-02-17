@@ -6,7 +6,7 @@
 #    By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/02 13:52:40 by arcanava          #+#    #+#              #
-#    Updated: 2024/02/13 11:44:31 by arcanava         ###   ########.fr        #
+#    Updated: 2024/02/15 21:40:05 by arcanava         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 NAME = libftprintf.a
@@ -49,7 +49,7 @@ DEPS = $(OBJS:%.o=%.d)
 #----SHARED----#
 
 #----BONUS----#
-BSRCS = ft_printf_bonus.c basic_handle_helper_bonus.c complex_handle_helper_bonus.c
+BSRCS = ft_printf_bonus.c basic_handle_helper_bonus.c complex_handle_helper_bonus.c padding_helper_bonus.c
 BOBJS = $(BSRCS:%.c=%.o)
 BDEPS = $(BOBJS:%.o=%.d)
 ifdef BONUS
@@ -88,7 +88,7 @@ clean: libft_clean
 	@rm -rf $(BIN_DIR)
 	@echo "$(YELLOW)bin/ is now clean!!!$(DEF_COLOR)\n"
 
-fclean: clean libft_fclean
+fclean: clean libft_fclean mainclean
 	@rm -f $(NAME)
 	@echo "$(YELLOW)Everything clean!!!$(DEF_COLOR)\n"
 
@@ -111,14 +111,38 @@ libft_clean:
 libft_fclean:
 	@$(MAKE) --no-print-directory -C $(LIBFT_DIR) fclean
 	@echo "$(YELLOW)Everything clean for $(PINK)libft.a$(YELLOW)!!!$(DEF_COLOR)\n"
-main: bonus
+
+norme:
+	@echo "$(YELLOW)\n------------------------\nChecking norme errors...\n------------------------\n$(DEF_COLOR)"
+	@-norminette $(INC_DIR) $(BONUS_INC_DIR) $(SRCS_DIR) $(BONUS_SRCS_DIR)
+
+compmain: bonus
 	@echo "\n$(YELLOW)COMPILING MAIN FOR TESTING..."
-	@$(CC) $(CCFLAGS) main.c $(NAME) -g -o main
+	@$(CC) $(CCFLAGS) -Wno-format main.c $(NAME) -g -o main
+
+main: compmain
 	@echo "$(GREEN)\n------------\nMain result:\n------------\n$(DEF_COLOR)"
 	@./main
 m: main
 
-.PHONY: all clean fclean re bonus bonusre make_libft libft_clean libft_fclean main m
+n: norme
+
+nm: norme main
+
+mn: nm
+
+leaks: compmain
+	@echo "$(YELLOW)\n------------------------\nChecking leaks atExit...\n------------------------\n$(DEF_COLOR)"
+	@-leaks -quiet -fullContent -atExit -- ./main
+
+mainclean:
+	@rm -f main
+
+test: norme leaks
+
+t: test
+
+.PHONY: all clean fclean re bonus bonusre make_libft libft_clean libft_fclean norme main m n nm mn leaks compmain mainclean test t
 
 -include $(DEPS)
 

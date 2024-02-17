@@ -10,3 +10,5 @@ Makefile_auto
 *.swp
 *.swo
 *dSYM
+
+.vscode

@@ -9,10 +9,12 @@
 /*   Updated: 2024/02/16 00:56:59 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include <stdarg.h>
-#include "../libft/libft.h"
 
-int		ft_printf(const char *s, ...);
+#ifndef FT_PRINTF_BONUS_H
+
+# define FT_PRINTF_BONUS_H
+# include <stdarg.h>
+# include "../libft/libft.h"
 
 typedef struct s_state
 {
@@ -29,26 +31,41 @@ typedef struct s_state
 	int			precision;
 	int			precision_len;
 	int			buffer_len;
-	char		*buffer;
 	long		num;
 }	t_state;
 
-void	handle_string(t_state *state);
+int		ft_printf(const char *s, ...);
 
-void	handle_percent(t_state *state);
+int		is_flag(char c);
 
-void	handle_char(t_state *state);
+void	apply_format(t_state *state);
 
-void	handle_pointer(t_state *state);
+void	parse_char(t_state *state);
 
-void	handle_number(t_state *state);
-
-void	handle_hex(t_state *state);
+void	parse_string(t_state *state);
 
 void	print_padding(t_state *state, int len);
 
-void    print_precision(t_state *state, int len);
+void	print_complex_padding_left(t_state *state);
 
-void	print_padding_left(t_state *state);
+void	print_padding_right(t_state *state, int len);
 
-void	print_padding_right(t_state *state);
+int		is_hex_spec(char c);
+
+int		is_number_spec(char c);
+
+void	parse_percent(t_state *state);
+
+void	parse_pointer(t_state *state);
+
+void	parse_number(t_state *state);
+
+void	parse_hexadecimal(t_state *state);
+
+void	print_precision(t_state *state, int len);
+
+int		count_digits(long nbr);
+
+int		count_hex_digits(unsigned int nbr);
+
+#endif

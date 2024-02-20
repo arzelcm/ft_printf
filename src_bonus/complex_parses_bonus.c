@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   complex_handle_helper_bonus.c                      :+:      :+:    :+:   */
+/*   complex_parses_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 11:29:43 by arcanava          #+#    #+#             */
-/*   Updated: 2024/02/16 02:01:54 by arcanava         ###   ########.fr       */
+/*   Created: 2024/02/19 19:52:54 by arcanava          #+#    #+#             */
+/*   Updated: 2024/02/19 19:52:55 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-void	handle_pointer(t_state *state)
+void	parse_pointer(t_state *state)
 {
 	unsigned long long	ptr_val;
 	char				buff[sizeof(void *) * 2];
@@ -28,36 +28,17 @@ void	handle_pointer(t_state *state)
 	}
 	len = i + 2 + (i == 0);
 	if (!state->justify_left)
-        print_padding(state, len);
+		print_padding(state, len);
 	ft_putstr("0x", &state->count);
 	if (i == 0 && state->count != -1)
 		ft_putstr("0", &state->count);
 	while (i && state->count > -1)
 		ft_putchar(&buff[--i], &state->count);
 	if (state->justify_left)
-        print_padding(state, len);
+		print_padding_right(state, len);
 }
 
-static int	count_num_digits(long nbr)
-{
-	int		i;
-	long	num;
-
-	num = (long) nbr;
-	if (nbr == 0)
-		return (1);
-	i = 0;
-	if (num < 0)
-		num *= -1;
-	while (num > 0)
-	{
-		num /= 10;
-		i++;
-	}
-	return (i);
-}
-
-void	handle_number(t_state *state)
+void	parse_number(t_state *state)
 {
 	if (*state->s == 'i' || *state->s == 'd')
 		state->num = (long) va_arg(state->arg_lst, int);
@@ -65,46 +46,40 @@ void	handle_number(t_state *state)
 		state->num = (long) va_arg(state->arg_lst, unsigned int);
 	else
 		return ;
-	// TODO: Delete precision init
-	state->precision_len = 0;
-	state->buffer_len = count_num_digits((long) state->num);
-	print_padding_left(state);
+	state->buffer_len = count_digits((long) state->num);
+	print_complex_padding_left(state);
 	if (!(state->num == 0 && state->precision == 0) && state->count > -1)
 		ft_putnbr(state->num, &state->count);
-	print_padding_right(state);
+	print_padding_right(state, state->buffer_len + state->precision_len);
 }
 
-int	get_uint_csize(unsigned int nbr)
+static void	print_buffer(t_state *state, char *buff, int i)
 {
-	int	i;
-
-	i = 0;
-	while (nbr)
-		nbr /= 16 + (0 * i++);
-	return (i);
-}
-
-static void	print_buffer(t_state *state, char **buffer, int i)
-{
-	char	*buff;
-
-	buff = *buffer;
 	if (i == 0 && state->count != -1 && (state->precision != 0))
 		ft_putstr("0", &state->count);
 	while (i && state->count > -1)
 		ft_putchar(&buff[--i], &state->count);
 }
 
-void	handle_hex(t_state *state)
+static void	print_hexadecimal(t_state *state, char *buff, int str_len)
+{
+	state->buffer_len = str_len;
+	if (state->buffer_len == 0)
+		state->buffer_len = 1;
+	print_complex_padding_left(state);
+	print_buffer(state, buff, str_len);
+	print_padding_right(state, state->buffer_len + state->precision_len);
+}
+
+void	parse_hexadecimal(t_state *state)
 {
 	char			*buff;
 	int				i;
 	unsigned int	nbr;
 
-	// TODO: Refactor this malloc
 	nbr = va_arg(state->arg_lst, unsigned int);
 	state->num = (long) nbr;
-	buff = malloc(sizeof(char) * (get_uint_csize(nbr) + 1));
+	buff = malloc(sizeof(char) * (count_hex_digits(nbr) + 1));
 	if (!buff)
 	{
 		state->count = -1;
@@ -120,13 +95,6 @@ void	handle_hex(t_state *state)
 		nbr /= 16;
 	}
 	buff[i] = '\0';
-	state->precision_len = 0;
-	state->buffer = buff;
-	state->buffer_len = ft_strlen(buff);
-	if (state->buffer_len == 0)
-		state->buffer_len = 1;
-	print_padding_left(state);
-	print_buffer(state, &buff, i);
-	print_padding_right(state);
+	print_hexadecimal(state, buff, i);
 	free(buff);
 }

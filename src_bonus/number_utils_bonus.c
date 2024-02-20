@@ -1,38 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   number_utills_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 21:40:17 by arcanava          #+#    #+#             */
-/*   Updated: 2024/02/12 17:11:22 by arcanava         ###   ########.fr       */
+/*   Created: 2024/02/19 19:53:03 by arcanava          #+#    #+#             */
+/*   Updated: 2024/02/19 19:53:05 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-
-# define FT_PRINTF_H
-# include <stdarg.h>
-# include "../libft/libft.h"
-
-int		ft_printf(const char *s, ...);
-
-typedef struct s_state
+int	count_digits(long nbr)
 {
-	va_list		arg_lst;
-	const char	*s;
-	int			count;
-}	t_state;
+	int		i;
+	long	num;
 
-void	parse_string(t_state *state);
+	num = (long) nbr;
+	if (nbr == 0)
+		return (1);
+	i = 0;
+	if (num < 0)
+		num *= -1;
+	while (num > 0)
+	{
+		num /= 10;
+		i++;
+	}
+	return (i);
+}
 
-void	parse_char(t_state *state);
+int	count_hex_digits(unsigned int nbr)
+{
+	int	i;
 
-void	parse_pointer(t_state *state);
-
-void	parse_number(t_state *state);
-
-void	parse_hexadecimal(t_state *state);
-
-#endif
+	i = 0;
+	while (nbr)
+		nbr /= 16 + (0 * i++);
+	return (i);
+}

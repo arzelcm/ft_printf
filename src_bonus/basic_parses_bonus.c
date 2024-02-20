@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   basic_handle_helper_bonus.c                        :+:      :+:    :+:   */
+/*   basic_parses_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 11:29:28 by arcanava          #+#    #+#             */
-/*   Updated: 2024/02/16 00:55:29 by arcanava         ###   ########.fr       */
+/*   Created: 2024/02/19 19:52:25 by arcanava          #+#    #+#             */
+/*   Updated: 2024/02/19 19:52:27 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-void	handle_string(t_state *state)
+void	parse_string(t_state *state)
 {
 	char	*str;
 	int		str_len;
@@ -21,7 +21,7 @@ void	handle_string(t_state *state)
 	i = 0;
 	str = va_arg(state->arg_lst, char *);
 	if (!str)
-        str = "(null)";
+		str = "(null)";
 	str_len = ft_strlen(str);
 	if (state->precision > -1 && str_len > state->precision)
 		str_len = state->precision;
@@ -34,41 +34,27 @@ void	handle_string(t_state *state)
 		str++;
 		i++;
 	}
-	if (state->justify_left)
-	{
-		state->padding_char = ' ';
-        print_padding(state, str_len);
-	}
+	print_padding_right(state, str_len);
 }
 
-void	handle_char(t_state *state)
+static void	print_char(t_state *state, char c)
+{
+	if (!state->justify_left)
+		print_padding(state, 1);
+	if (state->count != -1)
+		ft_putchar(&c, &state->count);
+	print_padding_right(state, 1);
+}
+
+void	parse_char(t_state *state)
 {
 	char	c;
 
 	c = va_arg(state->arg_lst, int);
-	if (!state->justify_left)
-        print_padding(state, 1);
-	if (state->count != -1)
-		ft_putchar(&c, &state->count);
-	if (state->justify_left)
-	{
-		state->padding_char = ' ';
-        print_padding(state, 1);
-	}
+	print_char(state, c);
 }
 
-void	handle_percent(t_state *state)
+void	parse_percent(t_state *state)
 {
-	char	c;
-
-	c = '%';
-	if (!state->justify_left)
-        print_padding(state, 1);
-	if (state->count != -1)
-		ft_putchar(&c, &state->count);
-	if (state->justify_left)
-	{
-		state->padding_char = ' ';
-        print_padding(state, 1);
-	}
+	print_char(state, '%');
 }

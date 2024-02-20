@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   flags_utils_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arcanava <arcanava@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 21:40:17 by arcanava          #+#    #+#             */
-/*   Updated: 2024/02/12 17:11:22 by arcanava         ###   ########.fr       */
+/*   Created: 2024/02/19 19:52:15 by arcanava          #+#    #+#             */
+/*   Updated: 2024/02/19 19:52:17 by arcanava         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
+#include "ft_printf_bonus.h"
 
-# define FT_PRINTF_H
-# include <stdarg.h>
-# include "../libft/libft.h"
-
-int		ft_printf(const char *s, ...);
-
-typedef struct s_state
+int	is_flag(char c)
 {
-	va_list		arg_lst;
-	const char	*s;
-	int			count;
-}	t_state;
+	return (c == '#' || c == '+' || c == ' '
+		|| c == '-' || c == '0');
+}
 
-void	parse_string(t_state *state);
+int	is_hex_spec(char c)
+{
+	return (c == 'x' || c == 'X');
+}
 
-void	parse_char(t_state *state);
-
-void	parse_pointer(t_state *state);
-
-void	parse_number(t_state *state);
-
-void	parse_hexadecimal(t_state *state);
-
-#endif
+int	is_number_spec(char c)
+{
+	return (c == 'd' || c == 'i' || c == 'u');
+}

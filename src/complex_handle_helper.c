@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-void	handle_pointer(t_state *state)
+void	parse_pointer(t_state *state)
 {
 	unsigned long long	ptr_val;
 	char				buff[sizeof(void *) * 2];
@@ -31,7 +31,7 @@ void	handle_pointer(t_state *state)
 		ft_putchar(&buff[--i], &state->count);
 }
 
-void	handle_number(t_state *state)
+void	parse_number(t_state *state)
 {
 	long	num;
 
@@ -44,7 +44,7 @@ void	handle_number(t_state *state)
 	ft_putnbr(num, &state->count);
 }
 
-int	get_uint_csize(unsigned int nbr)
+int	count_hex_digits(unsigned int nbr)
 {
 	int	i;
 
@@ -54,14 +54,14 @@ int	get_uint_csize(unsigned int nbr)
 	return (i);
 }
 
-void	handle_hex(t_state *state)
+void	parse_hexadecimal(t_state *state)
 {
 	char			*buff;
 	int				i;
 	unsigned int	nbr;
 
 	nbr = va_arg(state->arg_lst, unsigned int);
-	buff = malloc(sizeof(char) * get_uint_csize(nbr));
+	buff = malloc(sizeof(char) * count_hex_digits(nbr));
 	if (!buff)
 	{
 		state->count = -1;

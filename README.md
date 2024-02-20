@@ -1,6 +1,3 @@
-> [!WARNING] 
->  This project is WIP (Work In Progress).
-
 # 42 cursus ft_printf
 Because ft_putnbr() and ft_putstr() aren’t enough.
 
@@ -10,8 +7,6 @@ You will mainly learn about using a variable number of arguments. How cool is th
 It is actually pretty cool :)
 
 Version: 10
-
-# Contents
 
 # Requirements
 The prototype for the function must be:

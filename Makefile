@@ -42,14 +42,21 @@ BONUS_SRCS_DIR = src_bonus/
 BONUS_INC_DIR = inc_bonus/
 
 #----MANDATORY----#
-SRCS = ft_printf.c basic_handle_helper.c complex_handle_helper.c
+SRCS =	ft_printf.c \
+		basic_handle_helper.c \
+		complex_handle_helper.c
 OBJS = $(SRCS:%.c=%.o)
 DEPS = $(OBJS:%.o=%.d)
-
-#----SHARED----#
-
+ 
 #----BONUS----#
-BSRCS = ft_printf_bonus.c basic_handle_helper_bonus.c complex_handle_helper_bonus.c padding_helper_bonus.c
+BSRCS = ft_printf_bonus.c \
+		basic_parses_bonus.c \
+		complex_parses_bonus.c \
+		basic_padding_helper_bonus.c \
+		complex_padding_helper_bonus.c \
+		format_helper_bonus.c \
+		flags_utils_bonus.c \
+		number_utils_bonus.c
 BOBJS = $(BSRCS:%.c=%.o)
 BDEPS = $(BOBJS:%.o=%.d)
 ifdef BONUS
@@ -144,6 +151,6 @@ t: test
 
 .PHONY: all clean fclean re bonus bonusre make_libft libft_clean libft_fclean norme main m n nm mn leaks compmain mainclean test t
 
--include $(DEPS)
+-include $(addprefix $(BIN_DIR), $(DEPS))
 
--include $(BDEPS)
+-include $(addprefix $(BIN_DIR), $(BDEPS))

@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	handle_string(t_state *state)
+void	parse_string(t_state *state)
 {
 	char	*str;
 
@@ -26,7 +26,7 @@ void	handle_string(t_state *state)
 	}
 }
 
-void	handle_char(t_state *state)
+void	parse_char(t_state *state)
 {
 	char	c;
 
